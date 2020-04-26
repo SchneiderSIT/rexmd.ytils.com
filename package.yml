@@ -1,0 +1,7 @@
+# Retrieve these values from $addon->getProperty($key);
+
+package: ytils_rex_md
+version: '0.9.0'
+author: Kim Schneider <kim@schneidersit.de>
+supportpage: www.ytils.com
+pjax: false
