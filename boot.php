@@ -4,7 +4,8 @@
  * Ytils RexMd
  * Redaxo Add-on boot file.
  *
- * @author Kim Schneider <kim@schneidersit.de>
+ * @author Kim Schneider
+ * @link ytils.com
  * @license MIT License
  */
 

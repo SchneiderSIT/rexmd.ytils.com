@@ -2,6 +2,6 @@
 
 package: ytils_rex_md
 version: '0.9.0'
-author: Kim Schneider <kim@schneidersit.de>
-supportpage: www.ytils.com
+author: Kim Schneider <kim@ytils.com>
+supportpage: ytils.com
 pjax: false

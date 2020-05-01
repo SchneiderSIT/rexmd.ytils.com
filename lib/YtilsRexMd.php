@@ -4,7 +4,8 @@
  * Ytils RexMd
  * Main class
  *
- * @author Kim Schneider <kim@schneidersit.de>
+ * @author Kim Schneider
+ * @link ytils.com
  * @license MIT License
  */
 
