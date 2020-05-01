@@ -2,7 +2,9 @@
 
 /**
  * Ytils RexMd
- * Redaxo Add-on boot file.
+ * Redaxo Add-on
+ *
+ * Boot file.
  *
  * @author Kim Schneider
  * @link ytils.com

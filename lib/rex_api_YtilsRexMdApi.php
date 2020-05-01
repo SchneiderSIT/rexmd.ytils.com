@@ -2,7 +2,9 @@
 
 /**
  * Ytils RexMd
- * Redaxo Add-on AJAX API implementation.
+ * Redaxo Add-on
+ *
+ * AJAX API implementation.
  *
  * @author Kim Schneider
  * @link ytils.com

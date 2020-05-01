@@ -2,16 +2,16 @@
 
 /**
  * Ytils RexMd
- * Redaxo Add-on install file.
+ * Redaxo Add-on
+ *
+ * Install file.
  *
  * @author Kim Schneider
  * @link ytils.com
  * @license MIT License
  */
 
-const SLASH = DIRECTORY_SEPARATOR;
-
-$iOBasePath = dirname(__FILE__).SLASH."src".SLASH; // Productive
+$iOBasePath = dirname(__FILE__).'/src/';
 $outputSrcPath = $iOBasePath."output.php";
 $inputSrcPath = $iOBasePath."input.php";
 

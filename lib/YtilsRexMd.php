@@ -2,7 +2,9 @@
 
 /**
  * Ytils RexMd
- * Main class
+ * Redaxo Add-on
+ *
+ * Main class.
  *
  * @author Kim Schneider
  * @link ytils.com

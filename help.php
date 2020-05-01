@@ -2,13 +2,14 @@
 
 /**
  * Ytils RexMd
- * Redaxo Add-on help file.
+ * Redaxo Add-on
+ *
+ * Help file.
  *
  * @author Kim Schneider
  * @link ytils.com
  * @license MIT License
  */
-
 $content = <<<EOT
 # Ytils RexMd - Markdown editor for Redaxo
 
