@@ -13,9 +13,7 @@
 
 class YtilsRexMd
 {
-    // For GUI: https://github.com/Codecademy/textarea-helper
-
-    public const VERSION = '0.1.0';
+    public const VERSION = '0.8';
 
     public const AJAX_URL = '../index.php?rex-api-call=YtilsRexMdApi';
     public const AJAX_SUCCESS = 'success';

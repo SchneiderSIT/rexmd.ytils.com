@@ -16,6 +16,10 @@ $content = <<<EOT
 <a href="https://www.ytils.com" target="_blank">Ytils RexMd</a> adds a simple but powerful Markdown editor module to your Redaxo setup.
 The Add-on is based on the <a href="https://parsedown.org/" target="_blank">Parsedown project</a> by <a href="https://erusev.com" target="_blank">Emanuil Rusev</a>.
 
+## Browser compatibility
+
+Ytils RexMd is compatible with most modern browsers. Thinking of the Internet Explorer you will need a version &gt;= 9.
+
 ## Licenses 
 
 ### Ytils RexMd
