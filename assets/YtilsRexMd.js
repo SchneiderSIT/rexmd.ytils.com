@@ -2,6 +2,8 @@
 /*global alert */
 /*global document */
 /*global window */
+/*global console */
+/*global Ytils */
 /*jslint browser: true */
 /*jslint long: true */
 /*jslint this: true */
@@ -25,24 +27,27 @@
         /**
          * This click() event opens up the full screen Ytils RexMd editor.
          */
-        $(".ytilsRexMd").find("img.ytilsRexMdExpandButton").click(function() {
+        $(".ytilsRexMd").find(".ytilsRexMdExpandButton").click(function() {
 
             var AJAX_SUCCESS = "success";
-            // 30 * 1/10 seconds.
-            var FADEOUT_INTERVAL = 30;
+            // n * 1/10 seconds.
+            var FADEOUT_INTERVAL = 50;
             var FADING_SPEED = 300;
             // var AJAX_ERROR = "error";
 
             var BODY = "body";
             var DIV = "div";
             var IMG = "img";
+            var A = "a";
 
             var SRC = "src";
+            var HREF = "href";
 
             var HIDDEN = "hidden";
             var OVERFLOW = "overflow";
 
             var MEDIA_IMG_PREFIX = "./media/";
+            var REDAXO_URL_PREFIX = "./redaxo/";
 
             // Saving functon not done yet, see below.
             // var MODULE_UPDATE_BTN_SELECTOR = "[name='btn_update']";
@@ -50,6 +55,10 @@
 
             var openerId = $(this).data("attach");
             var openerSelector = createJQueryIdSelector(openerId);
+            var yupputCallbackMode;
+
+            var YUPPUT_MODE_ARTICLES = "A";
+            var YUPPUT_MODE_MEDIA_POOL = "M";
 
             var FULL_SCREEN_OVERLAY_CSS = "background-color: #F7F7F7; color: #525252; height: 100%; left: 0; position: fixed; top: 0; width: 100%; z-index: 1000;";
             var FULL_SCREEN_HEADER_CSS = "color: #525252; display: block; left: 0; margin: 0 auto; max-width: 720px; position: absolute; right: 0; top: 0; width: 100%; z-index: 4000;";
@@ -76,6 +85,8 @@
             var errorMessageCloseBtnId = openerId + "ErrorMessageCloseBtn";
             var closeBtnId = openerId + "CloseBtn";
             var previewBtnId = openerId + "PreviewBtn";
+            var mediaPoolYupputBtnId = openerId + "MediaPoolYupputBtnId";
+            var articlesYupputBtnId = openerId + "ArticlesYupputBtnId";
             // Saving function not done yet, see below.
             // var saveBtnId = openerId + "SaveBtn";
 
@@ -91,17 +102,36 @@
 
             var closeBtnSelector = createJQueryIdSelector(closeBtnId);
             var previewBtnSelector = createJQueryIdSelector(previewBtnId);
+            var mediaPoolYupputBtnIdSelector = createJQueryIdSelector(mediaPoolYupputBtnId);
+            var articlesYupputBtnIdSelector = createJQueryIdSelector(articlesYupputBtnId);
             // Saving function not done yet, see below.
             // var saveBtnSelector = createJQueryIdSelector(saveBtnId;
 
-            var ajaxtarget = $(openerSelector).data("ajaxtarget");
+            var ajaxtargetMd = $(openerSelector).data("ajaxtargetmd");
             var articleTitle = $(openerSelector).data("articletitle");
             var articleId = $(openerSelector).data("articleid");
             var csrf = $(openerSelector).data("csrf");
+            var placeholder = $(openerSelector).data("placeholder");
+            var placeholderArticles = $(openerSelector).data("i18nplaceholderarticles");
+            var placeholderMediaPool = $(openerSelector).data("i18nplaceholdermediapool");
+            var titleMediaPoolBtn = $(openerSelector).data("titlemediapoolbtn");
+            var titleArticlesBtn = $(openerSelector).data("titlearticlesbtn");
+            var titlePreviewBtn = $(openerSelector).data("titlepreviewbtn");
+            var titleCloseBtn = $(openerSelector).data("titleclosebtn");
 
             var initialBodyOverflow = $(BODY).css(OVERFLOW);
             var previewVisible = false;
             var headerVisible = true;
+
+            var currentCursorPosition = null;
+
+            var rexMdConfig = window.Ytils.YtilsRexMd.Config;
+            var rexMdConfigFontSize = rexMdConfig.ytils_rex_md_config_font_size || 16;
+            var rexMdConfigFont = rexMdConfig.ytils_rex_md_config_font || "\"Lucida Grande\", \"Helvetica Neue\", Helvetica, Arial, sans-serif";
+            var rexMdYupputItemCount = rexMdConfig.ytils_rex_md_config_number_of_yupput_items || 4; // $(openerSelector).data("yupputitemcount");
+            var yupputMpData = window.Ytils.YtilsRexMd.YupputMpData;
+            var yupputArtData = window.Ytils.YtilsRexMd.YupputArtData;
+            var yupput;
 
             /**
              * This function fades out the controls header.
@@ -180,15 +210,19 @@
                 document.body.appendChild(fullScreenHeader);
 
                 fullScreenHeader.innerHTML =
-                    "<div style='float: left; overflow: hidden; padding: 30px 0 0 10px; width: 75%;'>" +
-                        "<h1 style='font-size: 28px; font-weight: normal; margin: 0;'><span style='font-size: 14px;'>[" + articleId + "]</span> " + articleTitle + "</h1>" +
+                    "<div style='float: left; overflow: hidden; padding: 30px 0 0 10px; width: 75%; white-space: nowrap; text-overflow: ellipsis;'>" +
+                        "<h1 title='" + articleTitle + "' style='font-family: " + rexMdConfigFont + "; font-size: 28px; font-weight: normal; margin: 0;'><span style='font-size: 16px;'>[" + articleId + "]</span> " + articleTitle + "</h1>" +
                     "</div>" +
                     "<div style='float: left; overflow: hidden; padding: 30px 10px 0 0; text-align: right; width: 25%;'>" +
                         // Saving function not done yet, see below:
                         // "<span id='" + saveBtnId + "' data-attach='" + openerId + "' style='margin-right: 20px;'><img style='cursor: pointer;' src='../assets/addons/ytils_rex_md/save-525252.png' alt='' /></span>" +
-                        "<span id='" + previewBtnId + "' data-attach='" + openerId + "'><img style='cursor: pointer;' src='../assets/addons/ytils_rex_md/preview-525252.png' alt='' /></span>" +
+                        "<span id='" + articlesYupputBtnId + "' data-attach='" + openerId + "'><img style='cursor: pointer; width: 24px; height: 24px;' src='../assets/addons/ytils_rex_md/open-folder-yupput-525252.png' title='" + titleArticlesBtn + "' alt='' /></span>" +
                         "&nbsp;&nbsp;&nbsp;" +
-                        "<span id='" + closeBtnId + "' data-attach='" + openerId + "'><img style='cursor: pointer;' src='../assets/addons/ytils_rex_md/close-525252.png' alt='' /></span>" +
+                        "<span id='" + mediaPoolYupputBtnId + "' data-attach='" + openerId + "'><img style='cursor: pointer; width: 24px; height: 24px;' src='../assets/addons/ytils_rex_md/mediapool-525252.png' title='" + titleMediaPoolBtn + "' alt='' /></span>" +
+                        "&nbsp;&nbsp;&nbsp;" +
+                        "<span id='" + previewBtnId + "' data-attach='" + openerId + "'><img style='cursor: pointer;' src='../assets/addons/ytils_rex_md/preview-525252.png' title='" + titlePreviewBtn + "' alt='' /></span>" +
+                        "&nbsp;&nbsp;&nbsp;" +
+                        "<span id='" + closeBtnId + "' data-attach='" + openerId + "'><img style='cursor: pointer;' src='../assets/addons/ytils_rex_md/close-525252.png' title='" + titleCloseBtn + "' alt='' /></span>" +
                     "</div>" +
                     "<div id='" + errorMessageContainerId + "' style='background-color: #F7F7F7; clear: both; display: none; padding-top: 10px;'>" +
                         "<div style='padding-right: 2px; text-align: right;'><span id='" + errorMessageCloseBtnId + "' style='cursor: pointer;'>&times;</span></div>" +
@@ -203,7 +237,7 @@
 
                 fullScreenTextarea.innerHTML =
                     "<div style='height: 100%; padding-bottom: 80px; width: 100%;'>" +
-                        "<textarea id='" + textAreaInputId + "' style='background: none; border: 0; color: #525252; font-size: 14px; height: 100%; outline: none; width: 100%;'></textarea>" +
+                        "<textarea id='" + textAreaInputId + "' style='background: none; border: 0; color: #525252; font-family: " + rexMdConfigFont + "; font-size: " + rexMdConfigFontSize + "px; height: 100%; outline: none; width: 100%;'></textarea>" +
                     "<div>";
 
                 // Textarea overlay:
@@ -240,54 +274,74 @@
                     $(targetedFullScreenOverlaySelector).hide();
                     $(targetedFullScreenHeaderSelector).hide();
                     $(targetedFullScreenTextareaSelector).hide();
+                    yupput.hide();
 
                     $(BODY).css(OVERFLOW, initialBodyOverflow);
                 };
 
                 $(previewBtnSelector).click(function() {
 
-                    var request = $.ajax({
-                        url: ajaxtarget,
-                        method: "POST",
-                        data: {
-                            ytilsRexMdCsrf: csrf,
-                            input: $(textAreaInputSelector).val()
-                        },
-                        dataType: "json"
-                    });
+                    var errorText = $(openerSelector).data("i18npreviewerror");
+                    var xhr = new XMLHttpRequest();
+                    var request = "ytilsRexMdCsrf=" + csrf + "&input=" + $(textAreaInputSelector).val();
+                    var response;
+                    var parsedHtml;
+                    var oAttr;
 
-                    request.done(function(msg) {
+                    if (yupput.isVisible()) {
 
-                        if (msg.status === AJAX_SUCCESS) {
+                        yupput.hide();
+                    }
 
-                            var parsedContent = msg.content;
-                            var parsedHtml = $.parseHTML(parsedContent);
+                    xhr.onload = function() {
 
-                            $(IMG, parsedHtml).each(function() {
+                        if (xhr.status >= 200 && xhr.status < 300) {
 
-                                var oAttr = $(this, parsedHtml).attr(SRC);
-                                if (oAttr.substr(0, MEDIA_IMG_PREFIX.length) === MEDIA_IMG_PREFIX) {
+                            response = JSON.parse(xhr.responseText);
+                            if (response.status === AJAX_SUCCESS) {
 
-                                    $(this, parsedHtml).attr(SRC, ("." + oAttr));
+                                parsedHtml = $.parseHTML(response.content);
+                                $(IMG, parsedHtml).each(function() {
+
+                                    oAttr = $(this, parsedHtml).attr(SRC);
+                                    if (oAttr.substr(0, MEDIA_IMG_PREFIX.length) === MEDIA_IMG_PREFIX) {
+
+                                        $(this, parsedHtml).attr(SRC, ("." + oAttr));
+                                    }
+                                });
+
+                                if (window.Ytils.YtilsRexMd.isBackend) {
+
+                                    $(A, parsedHtml).each(function() {
+
+                                        oAttr = $(this, parsedHtml).attr(HREF);
+                                        if (oAttr.substr(0, REDAXO_URL_PREFIX.length) === REDAXO_URL_PREFIX) {
+
+                                            $(this, parsedHtml).attr(HREF, ("." + oAttr));
+                                        }
+                                    });
                                 }
-                            });
 
-                            $(previewBtnSelector).hide();
-                            previewVisible = true;
+                                $(previewBtnSelector).hide();
+                                previewVisible = true;
 
-                            $(fullScreenPreviewSelector).show();
-                            $(fullScreenPreviewInnerSelector).html(parsedHtml);
+                                $(fullScreenPreviewSelector).show();
+                                $(fullScreenPreviewInnerSelector).html(parsedHtml);
+
+                            } else {
+
+                                displayErrorMessage(errorText);
+                            }
 
                         } else {
 
-                            displayErrorMessage("Failed to render preview.");
+                            displayErrorMessage(errorText);
                         }
-                    });
+                    };
 
-                    request.fail(function() {
-
-                        displayErrorMessage("Request failed to receive preview data.");
-                    });
+                    xhr.open('POST', ajaxtargetMd, true);
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+                    xhr.send(request);
                 });
 
                 $(errorMessageCloseBtnSelector).click(function() {
@@ -309,7 +363,123 @@
                     }
                 });
 
+                var assignCursorPosition = function() {
 
+                    currentCursorPosition = $(textAreaInputSelector).prop("selectionStart");
+                    console.log("currentCursorPosition: " + currentCursorPosition);
+                };
+
+                $(textAreaInputSelector).keyup(function() {
+
+                    assignCursorPosition();
+                });
+
+                $(textAreaInputSelector).click(function() {
+
+                    assignCursorPosition();
+                });
+
+                var yupputSelectionCallback = function(selectedYupputItem/*, inputValue */) {
+
+                    var textAreaVal;
+                    var textAreaValSplit;
+                    var newTextAreaVal;
+                    var insertion;
+                    var cursorInsertionPoint;
+
+                    var splitTextAt = function(value, index)
+                    {
+                        var part0 = value.substring(0, index);
+                        var part1 = value.substring(index);
+
+                        return { "part0": part0, "part1": part1 };
+                    };
+
+                    textAreaVal = $(textAreaInputSelector).val();
+                    textAreaValSplit = splitTextAt(textAreaVal, currentCursorPosition);
+                    newTextAreaVal = textAreaValSplit.part0;
+
+                    if (yupputCallbackMode === YUPPUT_MODE_ARTICLES) {
+
+                        insertion = "[" + selectedYupputItem.headline + "](rex-article://" + selectedYupputItem.value + ")";
+
+                    } else if (yupputCallbackMode === YUPPUT_MODE_MEDIA_POOL) {
+
+                        if (Ytils.Toolbox.Common.isStringEndsWith(selectedYupputItem.value, "://img")) {
+
+                            selectedYupputItem.value = selectedYupputItem.value.replace("://img", "");
+                            insertion = "![" + selectedYupputItem.headline + "](" + selectedYupputItem.value + " \"" + selectedYupputItem.headline + "\")";
+
+                        } else {
+
+                            selectedYupputItem.value = selectedYupputItem.value.replace("://file", "");
+                            insertion = "[" + selectedYupputItem.headline + "](rex-media://" + selectedYupputItem.value + ")";
+                        }
+                    }
+
+                    cursorInsertionPoint = currentCursorPosition + insertion.length;
+                    newTextAreaVal += insertion;
+                    newTextAreaVal += textAreaValSplit.part1;
+
+                    $(textAreaInputSelector).val(newTextAreaVal);
+                    Ytils.YupputHtml.setCursorPosition($(textAreaInputSelector)[0], cursorInsertionPoint);
+
+                    yupput.hide();
+                };
+
+                yupput = new Ytils.Yupput(yupputMpData, yupputSelectionCallback, {
+
+                    "placeholder": placeholder,
+                    "maxItemCount": rexMdYupputItemCount,
+                    "ctrlShiftChar": null
+                });
+
+                var launchYupputArticles = function() {
+
+                    yupputCallbackMode = YUPPUT_MODE_ARTICLES;
+
+                    if (yupput.isVisible()) {
+
+                        yupput.hide();
+                    }
+
+                    yupput.updatePlaceholder(placeholderArticles);
+                    yupput.updateData(yupputArtData);
+                    yupput.show();
+                };
+
+                var launchYupputMediaPool = function() {
+
+                    yupputCallbackMode = YUPPUT_MODE_MEDIA_POOL;
+
+                    if (yupput.isVisible()) {
+
+                        yupput.hide();
+                    }
+
+                    yupput.updatePlaceholder(placeholderMediaPool);
+                    yupput.updateData(yupputMpData);
+                    yupput.show();
+                };
+
+                $(articlesYupputBtnIdSelector).click(launchYupputArticles);
+                $(mediaPoolYupputBtnIdSelector).click(launchYupputMediaPool);
+
+                document.addEventListener("keydown", function(e) {
+
+                    if (false === previewVisible) {
+
+                        if (e.ctrlKey && e.shiftKey && e.key === YUPPUT_MODE_ARTICLES) {
+
+                            launchYupputArticles();
+                        }
+
+                        if (e.ctrlKey && e.shiftKey && e.key === YUPPUT_MODE_MEDIA_POOL) {
+
+                            launchYupputMediaPool();
+                        }
+                    }
+                });
 
                 /* // Saving function not done yet.
                    // After creating a new module block

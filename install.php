@@ -2,16 +2,17 @@
 
 /**
  * Ytils RexMd
- * Redaxo Add-on
+ * Redaxo Add-on install file.
  *
- * Install file.
- *
- * @author Kim Schneider
- * @link ytils.com
+ * @author Kim Schneider <kim@schneidersit.de>
  * @license MIT License
  */
 
-$iOBasePath = dirname(__FILE__).'/src/';
+const SLASH = DIRECTORY_SEPARATOR;
+
+require_once(dirname(__FILE__).'/lib/YtilsRexMd.php');
+
+$iOBasePath = dirname(__FILE__).SLASH."src".SLASH; // Productive
 $outputSrcPath = $iOBasePath."output.php";
 $inputSrcPath = $iOBasePath."input.php";
 
@@ -43,3 +44,5 @@ if ($dbRes->getRows()) {
     /** @noinspection PhpUnhandledExceptionInspection */
     $dbRes->setDBQuery($sql, $params);
 }
+
+YtilsRexMd::createDefaultConfig();

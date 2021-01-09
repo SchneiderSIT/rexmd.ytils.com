@@ -54,7 +54,7 @@
     /**
      * This method checks if param val is a function
      *
-     * @param val
+     * @param {*} val
      * @returns {boolean}
      */
     window.Ytils.Toolbox.Common.isFunction = function(val) {
@@ -65,12 +65,24 @@
     /**
      * This method checks if param val is an integer number.
      *
-     * @param val
+     * @param {*} val
      * @returns {boolean}
      */
     window.Ytils.Toolbox.Common.isInt = function(val) {
 
         return val === +val && Number.isFinite(val) && !(val % 1);
     };
+
+    /**
+     * Whether val is a string and ends with suffix.
+     *
+     * @param {*} val
+     * @param {string} suffix
+     * @returns {boolean}
+     */
+    window.Ytils.Toolbox.Common.isStringEndsWith = function(val, suffix)
+    {
+        return typeof val === "string" && val.indexOf(suffix, val.length - suffix.length) !== -1;
+    }
 
 }());

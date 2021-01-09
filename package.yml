@@ -1,7 +1,22 @@
-# Retrieve these values from $addon->getProperty($key);
-
 package: ytils_rex_md
 version: '0.9.0'
-author: Kim Schneider <kim@ytils.com>
-supportpage: ytils.com
+author: Kim Schneider <kim@schneidersit.de>
+supportpage: www.ytils.com
 pjax: false
+
+page:
+  title: 'translate:title'
+  perm: admin
+  subpages:
+    main:
+      title: 'translate:main'
+      perm: admin
+    config:
+      title: 'translate:config'
+      perm: admin
+      icon: rex-icon fa-wrench
+
+requires:
+  redaxo: '^5.10'
+  php:
+    version: '>=7.1'

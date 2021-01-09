@@ -1,0 +1,33 @@
+ytils_rex_md_title = Ytils RexMd
+
+ytils_rex_md_main = Ytils RexMd
+ytils_rex_md_main_title = Ytils RexMd
+ytils_rex_md_main_content = Welcome to the Redaxo Add-on Ytils RexMd.<br />RexMd is a Markdown editor for distraction-free writing.<br />Documentation can be found here: {{documentationUrlEn}}.
+
+ytils_rex_md_config = Settings
+ytils_rex_md_config_html_css = Module output
+ytils_rex_md_config_yupput_dialogue = Popup dialogue Ytils Yupput
+ytils_rex_md_config_number_of_yupput_items = Maximum number of visible findings within the Yupput dialogue (search for media/articles), valid values 1..20.
+ytils_rex_md_config_font_size = Font size, valid values 6..32
+ytils_rex_md_config_outer_div_container = Encapsulate module output in <div class="ytilsRexMd">(...)</div>
+ytils_rex_md_config_ui_settings = RexMd UI
+ytils_rex_md_config_font = Font
+
+ytils_rex_md_yupput_config_placeholder = Find media or articles
+ytils_rex_md_yupput_config_placeholder_articles = Find articles
+ytils_rex_md_yupput_config_placeholder_mediapool = Find media
+ytils_rex_md_yupput_items_config_fail = The maximum number of visible findings within the Yupput dialogue must be at least 1 and 20 at maximum.
+ytils_rex_md_font_size_config_fail = Die Schriftgröße muss mindestens 6 und maximal 32 Pixel betragen.
+ytils_rex_md_previewerror = Error rendering preview.
+
+ytils_rex_md_opener_text = Launch Ytils RexMd
+ytils_rex_md_markdown_documentation = Markdown documentation
+
+ytils_rex_md_config_save = Save settings
+ytils_rex_md_config_saved = Settings saved!
+
+ytils_rex_md_tooltip_mediapoolbtn = Search media (Ctrl+Shift+M)
+ytils_rex_md_tooltip_articlesbtn = Search articles (Ctrl+Shift+A)
+ytils_rex_md_tooltip_previewbtn = Preview
+ytils_rex_md_tooltip_closebtn = Close
+
