@@ -59,6 +59,7 @@
 
             var YUPPUT_MODE_ARTICLES = "A";
             var YUPPUT_MODE_MEDIA_POOL = "M";
+            var PREVIEW_MODE = "V";
 
             var FULL_SCREEN_OVERLAY_CSS = "background-color: #F7F7F7; color: #525252; height: 100%; left: 0; position: fixed; top: 0; width: 100%; z-index: 1000;";
             var FULL_SCREEN_HEADER_CSS = "color: #525252; display: block; left: 0; margin: 0 auto; max-width: 720px; position: absolute; right: 0; top: 0; width: 100%; z-index: 4000;";
@@ -274,12 +275,13 @@
                     $(targetedFullScreenOverlaySelector).hide();
                     $(targetedFullScreenHeaderSelector).hide();
                     $(targetedFullScreenTextareaSelector).hide();
+                    previewVisible = false;
                     yupput.hide();
 
                     $(BODY).css(OVERFLOW, initialBodyOverflow);
                 };
 
-                $(previewBtnSelector).click(function() {
+                var launchPreview = function() {
 
                     var errorText = $(openerSelector).data("i18npreviewerror");
                     var xhr = new XMLHttpRequest();
@@ -342,6 +344,11 @@
                     xhr.open('POST', ajaxtargetMd, true);
                     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
                     xhr.send(request);
+                };
+
+                $(previewBtnSelector).click(function() {
+
+                    launchPreview();
                 });
 
                 $(errorMessageCloseBtnSelector).click(function() {
@@ -467,6 +474,8 @@
 
                 document.addEventListener("keydown", function(e) {
 
+                    var ESCAPE = "Escape";
+
                     if (false === previewVisible) {
 
                         if (e.ctrlKey && e.shiftKey && e.key === YUPPUT_MODE_ARTICLES) {
@@ -477,6 +486,23 @@
                         if (e.ctrlKey && e.shiftKey && e.key === YUPPUT_MODE_MEDIA_POOL) {
 
                             launchYupputMediaPool();
+                        }
+
+                        if (e.ctrlKey && e.shiftKey && e.key === PREVIEW_MODE) {
+
+                            launchPreview();
+                        }
+
+                        if (e.key === ESCAPE) {
+
+                            closeAllOverlays(openerId);
+                        }
+
+                    } else {
+
+                        if (e.key === ESCAPE) {
+
+                            $(closeBtnSelector).trigger("click");
                         }
                     }
                 });

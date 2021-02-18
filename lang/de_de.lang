@@ -2,7 +2,7 @@ ytils_rex_md_title = Ytils RexMd
 
 ytils_rex_md_main = Ytils RexMd
 ytils_rex_md_main_title = Ytils RexMd
-ytils_rex_md_main_content = Willkommen beim Redaxo Addon Ytils RexMd.<br />RexMd ist ein Markdown Editor für ablenkungsfreies Schreiben.<br />Dokumentation unter {{documentationUrlDe}}.
+ytils_rex_md_main_content = Willkommen beim Redaxo Addon Ytils RexMd.<br />RexMd ist ein Markdown Editor für ablenkungsfreies Schreiben.<br />Dokumentation unter {{documentationUrlEn}}.
 
 ytils_rex_md_config = Einstellungen
 ytils_rex_md_config_html_css = Modul-Output

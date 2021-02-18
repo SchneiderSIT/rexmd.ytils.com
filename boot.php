@@ -12,10 +12,10 @@ if (rex::isBackend() && is_object(rex::getUser())) {
 
     /** @noinspection PhpUnhandledExceptionInspection */
     rex_view::addCssFile($this->getAssetsUrl('YtilsRexMd.css'));
-    rex_view::addCssFile($this->getAssetsUrl('ytils.yupput-0.9.css'));
+    rex_view::addCssFile($this->getAssetsUrl('ytils.yupput-0.12.css'));
     /** @noinspection PhpUnhandledExceptionInspection */
     rex_view::addJsFile($this->getAssetsUrl('YtilsToolboxCommon.js'));
     rex_view::addJsFile($this->getAssetsUrl('YtilsToolboxDateTime.js'));
     rex_view::addJsFile($this->getAssetsUrl('YtilsRexMd.js'));
-    rex_view::addJsFile($this->getAssetsUrl('ytils.yupput-0.9.js'));
+    rex_view::addJsFile($this->getAssetsUrl('ytils.yupput-0.12.js'));
 }
