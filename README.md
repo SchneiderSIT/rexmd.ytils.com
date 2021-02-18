@@ -2,7 +2,7 @@
 
 Redaxo CMS add-on for adding a Markdown editor that supports non-distracting, focussed work on articles.
 
-![Ytils RexMd](https://www.ytils.com/static/img/ytils-rexmd-launched-first-impression.png "Ytils RexMd")
+![Ytils RexMd](https://www.ytils.com/static/img/ytils-rexmd-first-impression-github.png "Ytils RexMd")
 
 ## Available on Redaxo's installer
 
