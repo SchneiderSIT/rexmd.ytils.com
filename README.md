@@ -7,3 +7,7 @@ Redaxo CMS add-on for adding a Markdown editor that supports non-distracting, fo
 ## Available on Redaxo's installer
 
 Ytils RexMd is available on Redaxo's installer. Just find the add-on with the key *ytils_rex_md*.
+
+## Full documentation
+
+Visit https://www.ytils.com/rexmd for full documentation. 
