@@ -10,7 +10,7 @@
 
 class YtilsRexMd
 {
-    public const VERSION = '0.9.0';
+    public const VERSION = '0.9.1';
     public const REDAXO_ADDON_ID = 'ytils_rex_md';
 
     public const MEDIA_POOL_IMAGE_SUFFIX = "://img";
@@ -24,6 +24,8 @@ class YtilsRexMd
     public const CONFIG_VALUE_OUTER_DIV_CONTAINER = 1;
     public const CONFIG_KEY_FONT = 'ytils_rex_md_config_font';
     public const CONFIG_VALUE_FONT = '"Lucida Grande", "Helvetica Neue", Helvetica, Arial, sans-serif';
+    public const CONFIG_KEY_CONTAINS_FOR_ARTICLES_AND_MEDIAPOOL = 'ytils_rex_md_config_contains_for_articles_and_media_pool';
+    public const CONFIG_VALUE_CONTAINS_FOR_ARTICLES_AND_MEDIAPOOL = 0;
 
     public const AJAX_URL_MD = '../index.php?rex-api-call=YtilsRexMdApi';
     public const AJAX_SUCCESS = 'success';
@@ -109,6 +111,7 @@ class YtilsRexMd
         $configObj[static::CONFIG_KEY_OUTER_DIV_CONTAINER] = $addon->getConfig(static::CONFIG_KEY_OUTER_DIV_CONTAINER);
         $configObj[static::CONFIG_KEY_FONT] = $addon->getConfig(static::CONFIG_KEY_FONT);
         $configObj[static::CONFIG_KEY_FONT_SIZE] = $addon->getConfig(static::CONFIG_KEY_FONT_SIZE);
+        $configObj[static::CONFIG_KEY_CONTAINS_FOR_ARTICLES_AND_MEDIAPOOL] = $addon->getConfig(static::CONFIG_KEY_CONTAINS_FOR_ARTICLES_AND_MEDIAPOOL);
 
         return json_encode($configObj, JSON_FORCE_OBJECT);
     }
@@ -235,6 +238,7 @@ class YtilsRexMd
         $addon->setConfig(static::CONFIG_KEY_OUTER_DIV_CONTAINER, static::CONFIG_VALUE_OUTER_DIV_CONTAINER);
         $addon->setConfig(static::CONFIG_KEY_FONT, static::CONFIG_VALUE_FONT);
         $addon->setConfig(static::CONFIG_KEY_FONT_SIZE, static::CONFIG_VALUE_FONT_SIZE);
+        $addon->setConfig(static::CONFIG_KEY_CONTAINS_FOR_ARTICLES_AND_MEDIAPOOL, static::CONFIG_VALUE_CONTAINS_FOR_ARTICLES_AND_MEDIAPOOL);
     }
 
     /**

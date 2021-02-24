@@ -12,6 +12,7 @@ ytils_rex_md_config_font_size = Schriftgröße, Wertebereich 6..32
 ytils_rex_md_config_outer_div_container = Modul-Output in <div class="ytilsRexMd">(...)</div> kapseln
 ytils_rex_md_config_ui_settings = RexMd-Oberfläche
 ytils_rex_md_config_font = Schriftart
+ytils_rex_md_config_contains_for_articles_and_mediapool = Artikel- und Medienpoolsuche mit %<Suchbegriff>% statt <Suchbegriff>%.
 
 ytils_rex_md_yupput_config_placeholder = Medien/Artikel suchen
 ytils_rex_md_yupput_config_placeholder_articles = Artikel suchen

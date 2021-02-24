@@ -130,6 +130,7 @@
             var rexMdConfigFontSize = rexMdConfig.ytils_rex_md_config_font_size || 16;
             var rexMdConfigFont = rexMdConfig.ytils_rex_md_config_font || "\"Lucida Grande\", \"Helvetica Neue\", Helvetica, Arial, sans-serif";
             var rexMdYupputItemCount = rexMdConfig.ytils_rex_md_config_number_of_yupput_items || 4; // $(openerSelector).data("yupputitemcount");
+            var containsForArticlesAndMediaPool = rexMdConfig.ytils_rex_md_config_contains_for_articles_and_media_pool || 0;
             var yupputMpData = window.Ytils.YtilsRexMd.YupputMpData;
             var yupputArtData = window.Ytils.YtilsRexMd.YupputArtData;
             var yupput;
@@ -438,7 +439,8 @@
 
                     "placeholder": placeholder,
                     "maxItemCount": rexMdYupputItemCount,
-                    "ctrlShiftChar": null
+                    "ctrlShiftChar": null,
+                    "containsForHeadlineMatches": !!containsForArticlesAndMediaPool
                 });
 
                 var launchYupputArticles = function() {
@@ -493,7 +495,7 @@
                             launchPreview();
                         }
 
-                        if (e.key === ESCAPE) {
+                        if (e.key === ESCAPE && false === yupput.isVisible()) {
 
                             closeAllOverlays(openerId);
                         }

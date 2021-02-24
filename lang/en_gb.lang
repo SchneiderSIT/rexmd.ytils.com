@@ -12,6 +12,7 @@ ytils_rex_md_config_font_size = Font size, valid values 6..32
 ytils_rex_md_config_outer_div_container = Encapsulate module output in <div class="ytilsRexMd">(...)</div>
 ytils_rex_md_config_ui_settings = RexMd UI
 ytils_rex_md_config_font = Font
+ytils_rex_md_config_contains_for_articles_and_mediapool = Article and mediapool search with %<search value>% instead of <search value>%.
 
 ytils_rex_md_yupput_config_placeholder = Find media or articles
 ytils_rex_md_yupput_config_placeholder_articles = Find articles

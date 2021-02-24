@@ -17,6 +17,7 @@ if (rex_post('formsubmit', 'string') === '1') {
     $numberOfYupputItems = rex_post(YtilsRexMd::CONFIG_KEY_YUPPUT_ITEMS, YINT);
     $fontSize = rex_post(YtilsRexMd::CONFIG_KEY_FONT_SIZE, YINT);
     $encapsulateOutputToDiv = rex_post(YtilsRexMd::CONFIG_KEY_OUTER_DIV_CONTAINER, YINT);
+    $containsSearch = rex_post(YtilsRexMd::CONFIG_KEY_CONTAINS_FOR_ARTICLES_AND_MEDIAPOOL, YINT);
 
     if (false === ($numberOfYupputItems >= MIN_NUMBER_OF_YUPPUT_ITEMS && $numberOfYupputItems <= MAX_NUMBER_OF_YUPPUT_ITEMS)) {
 
@@ -45,6 +46,15 @@ if (rex_post('formsubmit', 'string') === '1') {
     } else {
 
         $this->setConfig(YtilsRexMd::CONFIG_KEY_OUTER_DIV_CONTAINER, 0);
+    }
+
+    if ($containsSearch === 1) {
+
+        $this->setConfig(YtilsRexMd::CONFIG_KEY_CONTAINS_FOR_ARTICLES_AND_MEDIAPOOL, $containsSearch);
+
+    } else {
+
+        $this->setConfig(YtilsRexMd::CONFIG_KEY_CONTAINS_FOR_ARTICLES_AND_MEDIAPOOL, 0);
     }
 
     $this->setConfig(YtilsRexMd::CONFIG_KEY_FONT, rex_post(YtilsRexMd::CONFIG_KEY_FONT, 'string'));
@@ -97,6 +107,15 @@ $formElements[] = $n;
 $fragment = new rex_fragment();
 $fragment->setVar('elements', $formElements, false);
 $content .= $fragment->parse('core/form/container.php');
+
+$formElements = [];
+$n = [];
+$n['label'] = '<label for="'.YtilsRexMd::CONFIG_KEY_CONTAINS_FOR_ARTICLES_AND_MEDIAPOOL.'">' . $this->i18n('ytils_rex_md_config_contains_for_articles_and_mediapool') . '</label>';
+$n['field'] = '<input type="checkbox" id="'.YtilsRexMd::CONFIG_KEY_CONTAINS_FOR_ARTICLES_AND_MEDIAPOOL.'" name="'.YtilsRexMd::CONFIG_KEY_CONTAINS_FOR_ARTICLES_AND_MEDIAPOOL.'"' . (!empty($this->getConfig(YtilsRexMd::CONFIG_KEY_CONTAINS_FOR_ARTICLES_AND_MEDIAPOOL)) && $this->getConfig(YtilsRexMd::CONFIG_KEY_CONTAINS_FOR_ARTICLES_AND_MEDIAPOOL) === 1 ? ' checked="checked"' : '') . ' value="1" />';
+$formElements[] = $n;
+$fragment = new rex_fragment();
+$fragment->setVar('elements', $formElements, false);
+$content .= $fragment->parse('core/form/checkbox.php');
 
 $content .= '</fieldset><fieldset><legend>' . $this->i18n('ytils_rex_md_config_html_css') . '</legend>';
 
