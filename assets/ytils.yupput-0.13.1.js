@@ -24,12 +24,12 @@
 /*jslint for: true */
 (function() {
 
-    "use strict";
+        "use strict";
     if (!window.Ytils) {
 
         window.Ytils = { };
     }
-    Ytils.YupputHelper = { };
+        Ytils.YupputHelper = { };
 
     /**
      * Whether given parameter obj is a HTML element or not.
@@ -348,7 +348,7 @@
 
         throw "[Ytils.Yupput] " + error;
     };
-    Ytils.YupputHtml = { };
+        Ytils.YupputHtml = { };
 
     /**
      * This function returns the CSS text for a HTML element referenced by id and returns the CSS for the key cssKey.
@@ -647,7 +647,7 @@
     };
 
 
-    Ytils.YupputInput = { };
+        Ytils.YupputInput = { };
 
     /**
      * Returns an input HTML element handle.
@@ -751,6 +751,7 @@
      * @param {boolean} [config.matchCaseInsensitive] - Whether to match case insensitive or not. Defaults to true.
      * @param {boolean} [config.callbackOnNoSelOnEnter] - Whether to fire @callback inputCallback on enter when nothing's been selected. Will use first displayed item or null. Defaults to false.
      * @param {boolean} [config.hideOnCallbackFired] - Whether to hide Yupput dialogue on callback fired or not. Defaults to false.
+     * @param {boolean} [config.hideOnClickOutside] - Whether to hide Yupput dialogue on a click outside the dialogue or not. Defaults to false.
      * @param {boolean} [config.preloadImages] - Whether to preload the images of the items passed into the constructor or not. Defaults to false.
      * @param {boolean} [config.matchOnlyHeadline] - Whether to find matches only over the headline value and not within meta data. Defaults to false.
      * @param {boolean} [config.containsForHeadlineMatches] - Whether to use contains for headline matching instead of starts-with-check. Defaults to false.
@@ -786,6 +787,7 @@
         var DEFAULT_CONTAINS_FOR_META_MATCHES = false;
         var DEFAULT_CALLBACK_ON_NO_SELECTION_ON_ENTER = false;
         var DEFAULT_HIDE_ON_CALLBACK = false;
+        var DEFAULT_HIDE_ON_CLICK_OUTSIDE = false;
         var DEFAULT_MATCH_CASE_INSENSITIVE = true;
         var DEFAULT_MOVE_CURSOR_BACK_TO_END_ON_UP_ARROW = true;
 
@@ -895,6 +897,11 @@
          * @†ype {boolean}
          */
         var hideOnCallbackFired;
+
+        /**
+         * @†ype {boolean}
+         */
+        var hideOnClickOutside;
 
         /**
          * @†ype {boolean}
@@ -1240,7 +1247,7 @@
             var c = valuesPrivateWRenderingMatching.length;
             if (c > maxItemCount) {
 
-                c = maxItemCount;
+                 c = maxItemCount;
             }
 
             for (i = 0; i < c; i += 1) {
@@ -1638,6 +1645,24 @@
             var c = valuesPrivateWRendering.length;
             var yupputFindingContainerHandle;
 
+            if (true === hideOnClickOutside) {
+
+                document.addEventListener(CLICK, function (e) {
+
+                    var cTarget = e.target;
+                    while (cTarget.parentNode !== null) {
+
+                        cTarget = cTarget.parentNode;
+                        if (cTarget.id && cTarget.id === CONTAINER_ID) {
+
+                            return;
+                        }
+                    }
+
+                    hidePrivate();
+                });
+            }
+
             var registerMouseMoveBehaviour = function(yupputFindingContainerHandle) {
 
                 yupputFindingContainerHandle.addEventListener(MOUSE_MOVE, function() {
@@ -1692,169 +1717,170 @@
             }
         };
 
+        
+    /**
+     * Constructor.
+     *
+     * @param {object[]} values - An array of objects with the following parameters:
+     * @param {string} values.headline - The headline of the entry.
+     * @param {string[]} values.metaData - An array of string to display meta data in the second row below the headline.
+     * @param {string} [values.thumbnail] - Optional: The url to the thumbnail image.
+     * @param {string} values.value - The value to return to the callback if value[x] has been selected.
+     * @throws Will throw an exception if current browser is an Internet Explorer with a version lower than 10.
+     */
+    var construct = function(values) {
 
-        /**
-         * Constructor.
-         *
-         * @param {object[]} values - An array of objects with the following parameters:
-         * @param {string} values.headline - The headline of the entry.
-         * @param {string[]} values.metaData - An array of string to display meta data in the second row below the headline.
-         * @param {string} [values.thumbnail] - Optional: The url to the thumbnail image.
-         * @param {string} values.value - The value to return to the callback if value[x] has been selected.
-         * @throws Will throw an exception if current browser is an Internet Explorer with a version lower than 10.
-         */
-        var construct = function(values) {
+        var preload = function() {
 
-            var preload = function() {
+            var i;
+            var c = valuesPrivate.length;
 
-                var i;
-                var c = valuesPrivate.length;
+            for (i = 0; i < c; i += 1) {
 
-                for (i = 0; i < c; i += 1) {
+                if (Ytils.YupputHelper.isString(valuesPrivate[i].thumbnail)) {
 
-                    if (Ytils.YupputHelper.isString(valuesPrivate[i].thumbnail)) {
-
-                        Ytils.YupputHtml.preloadImage(valuesPrivate[i].thumbnail);
-                    }
+                    Ytils.YupputHtml.preloadImage(valuesPrivate[i].thumbnail);
                 }
-            };
-
-            var god = Ytils.YupputHelper.god;
-            var godd = Ytils.YupputHelper.godd;
-            var ieCheck = Ytils.YupputHelper.isIEWVersion();
-
-            if (ieCheck.isIE && ieCheck.version <= 9) {
-
-                throw "Ytils Yupput requires Internet Explorer with a version higher or equal 10.";
-            }
-
-            placeholder = godd(config,"placeholder", DEFAULT_PLACEHOLDER);
-            zIndex = godd(config,"zIndex", DEFAULT_Z_INDEX);
-            maxItemCount = godd(config,"maxItemCount", DEFAULT_MAX_ITEM_COUNT);
-            ctrlShiftChar = godd(config,"ctrlShiftChar", DEFAULT_CTRL_SHIFT_CHAR);
-            hideOnEscape = godd(config,"hideOnEscape", DEFAULT_HIDE_ON_ESCAPE);
-            preloadImages = godd(config,"preloadImages", DEFAULT_PRELOAD_IMAGES);
-            matchOnlyHeadline = godd(config,"matchOnlyHeadline", DEFAULT_MATCH_ONLY_HEADLINE);
-            stopPropagateEnter = godd(config,"stopPropagateEnter", DEFAULT_STOP_PROPAGATE_ENTER);
-            stopPropagateEscape = godd(config,"stopPropagateEscape", DEFAULT_STOP_PROPAGATE_ESCAPE);
-            stopPropagateDblClick = godd(config,"stopPropagateDblClick", DEFAULT_STOP_PROPAGATE_DBLCLICK);
-            containsForHeadlineMatches = godd(config,"containsForHeadlineMatches", DEFAULT_CONTAINS_FOR_HEADLINE_MATCHES);
-            containsForMetaMatches = godd(config,"containsForMetaMatches", DEFAULT_CONTAINS_FOR_META_MATCHES);
-            callbackOnNoSelOnEnter = godd(config,"callbackOnNoSelOnEnter", DEFAULT_CALLBACK_ON_NO_SELECTION_ON_ENTER);
-            hideOnCallbackFired = godd(config,"hideOnCallbackFired", DEFAULT_HIDE_ON_CALLBACK);
-            matchCaseInsensitive = godd(config,"matchCaseInsensitive", DEFAULT_MATCH_CASE_INSENSITIVE);
-            callbackOnChange = god(config, "callbackOnChange");
-            moveCursorToEndOnUp = godd(config,"moveCursorToEndOnUp", DEFAULT_MOVE_CURSOR_BACK_TO_END_ON_UP_ARROW);
-            callbackThumbnailClick = god(config, "callbackThumbnailClick");
-
-            if (containsForHeadlineMatches) {
-                matchForHeadlineMatchesCallback = Ytils.YupputHelper.isStringContaining;
-            }
-            if (containsForMetaMatches) {
-                matchForMetaMatchesCallback = Ytils.YupputHelper.isStringContaining;
-            }
-
-            var yyh = Ytils.YupputHelper;
-
-            // Check callback parameter:
-            yyh.expectFunction(callback, "Ytils.Yupput expects parameter callback to be a function.");
-
-            // Check config options:
-            yyh.expectFunctionOrNull(callbackOnChange, "Ytils.Yupput expects config option .callbackOnChange to be a function.");
-            yyh.expectString(placeholder, "Ytils.Yupput expects config option .placeholder to be a string.");
-            yyh.expectInt(zIndex, "Ytils.Yupput expects config option .zIndex to be an integer number.");
-            yyh.expectInt(maxItemCount, "Ytils.Yupput expects config option .maxItemCount to be an integer number.");
-            yyh.expectBoolean(hideOnEscape, "Ytils.Yupput expects config option .hideOnEscape to be a boolean.");
-            yyh.expectBoolean(matchCaseInsensitive, "Ytils.Yupput expects config option .matchCaseInsensitive to be a boolean.");
-            yyh.expectBoolean(callbackOnNoSelOnEnter, "Ytils.Yupput expects config option .callbackOnNoSelOnEnter to be a boolean.");
-            yyh.expectBoolean(hideOnCallbackFired, "Ytils.Yupput expects config option .hideOnCallbackFired to be a boolean.");
-            yyh.expectBoolean(preloadImages, "Ytils.Yupput expects config option .preloadImages to be a boolean.");
-            yyh.expectBoolean(matchOnlyHeadline, "Ytils.Yupput expects config option .matchOnlyHeadline to be a boolean.");
-            yyh.expectBoolean(containsForHeadlineMatches, "Ytils.Yupput expects config option .containsForHeadlineMatches to be a boolean.");
-            yyh.expectBoolean(containsForMetaMatches, "Ytils.Yupput expects config option .containsForMetaMatches to be a boolean.");
-            yyh.expectBoolean(stopPropagateEnter, "Ytils.Yupput expects config option .stopPropagateEnter to be a boolean.");
-            yyh.expectBoolean(stopPropagateEscape, "Ytils.Yupput expects config option .stopPropagateEscape to be a boolean.");
-            yyh.expectBoolean(stopPropagateDblClick, "Ytils.Yupput expects config option .stopPropagateDblClick to be a boolean.");
-            yyh.expectBoolean(moveCursorToEndOnUp, "Ytils.Yupput expects config option .moveCursorToEndOnUp to be a boolean.");
-            yyh.expectAz09CharOrNull(ctrlShiftChar, "Ytils.Yupput expects config option .ctrlShiftChar to be a single char within a-z, A-Z or 0-9.");
-            yyh.expectFunctionOrNull(callbackOnChange, "Ytils.Yupput expects config option .callbackOnChange to be a function.");
-
-
-            if (null !== ctrlShiftChar) {
-
-                ctrlShiftChar = ctrlShiftChar.toUpperCase();
-            }
-
-            createInitialContainer();
-            valuesPrivate = values;
-            prepareAllValuesAndAppendToBody();
-
-            Ytils.YupputHtml.expectExisting(INPUT_ID);
-            initKeyListeners();
-            initMouseListeners(true);
-
-            if (preloadImages) {
-
-                preload();
             }
         };
 
-        construct(values);
+        var god = Ytils.YupputHelper.god;
+        var godd = Ytils.YupputHelper.godd;
+        var ieCheck = Ytils.YupputHelper.isIEWVersion();
+
+        if (ieCheck.isIE && ieCheck.version <= 9) {
+
+            throw "Ytils Yupput requires Internet Explorer with a version higher or equal 10.";
+        }
+
+        placeholder = godd(config,"placeholder", DEFAULT_PLACEHOLDER);
+        zIndex = godd(config,"zIndex", DEFAULT_Z_INDEX);
+        maxItemCount = godd(config,"maxItemCount", DEFAULT_MAX_ITEM_COUNT);
+        ctrlShiftChar = godd(config,"ctrlShiftChar", DEFAULT_CTRL_SHIFT_CHAR);
+        hideOnEscape = godd(config,"hideOnEscape", DEFAULT_HIDE_ON_ESCAPE);
+        preloadImages = godd(config,"preloadImages", DEFAULT_PRELOAD_IMAGES);
+        matchOnlyHeadline = godd(config,"matchOnlyHeadline", DEFAULT_MATCH_ONLY_HEADLINE);
+        stopPropagateEnter = godd(config,"stopPropagateEnter", DEFAULT_STOP_PROPAGATE_ENTER);
+        stopPropagateEscape = godd(config,"stopPropagateEscape", DEFAULT_STOP_PROPAGATE_ESCAPE);
+        stopPropagateDblClick = godd(config,"stopPropagateDblClick", DEFAULT_STOP_PROPAGATE_DBLCLICK);
+        containsForHeadlineMatches = godd(config,"containsForHeadlineMatches", DEFAULT_CONTAINS_FOR_HEADLINE_MATCHES);
+        containsForMetaMatches = godd(config,"containsForMetaMatches", DEFAULT_CONTAINS_FOR_META_MATCHES);
+        callbackOnNoSelOnEnter = godd(config,"callbackOnNoSelOnEnter", DEFAULT_CALLBACK_ON_NO_SELECTION_ON_ENTER);
+        hideOnCallbackFired = godd(config,"hideOnCallbackFired", DEFAULT_HIDE_ON_CALLBACK);
+        hideOnClickOutside = godd(config,"hideOnClickOutside", DEFAULT_HIDE_ON_CLICK_OUTSIDE);
+        matchCaseInsensitive = godd(config,"matchCaseInsensitive", DEFAULT_MATCH_CASE_INSENSITIVE);
+        callbackOnChange = god(config, "callbackOnChange");
+        moveCursorToEndOnUp = godd(config,"moveCursorToEndOnUp", DEFAULT_MOVE_CURSOR_BACK_TO_END_ON_UP_ARROW);
+        callbackThumbnailClick = god(config, "callbackThumbnailClick");
+
+        if (containsForHeadlineMatches) {
+            matchForHeadlineMatchesCallback = Ytils.YupputHelper.isStringContaining;
+        }
+        if (containsForMetaMatches) {
+            matchForMetaMatchesCallback = Ytils.YupputHelper.isStringContaining;
+        }
+
+        var yyh = Ytils.YupputHelper;
+
+        // Check callback parameter:
+        yyh.expectFunction(callback, "Ytils.Yupput expects parameter callback to be a function.");
+
+        // Check config options:
+        yyh.expectFunctionOrNull(callbackOnChange, "Ytils.Yupput expects config option .callbackOnChange to be a function.");
+        yyh.expectString(placeholder, "Ytils.Yupput expects config option .placeholder to be a string.");
+        yyh.expectInt(zIndex, "Ytils.Yupput expects config option .zIndex to be an integer number.");
+        yyh.expectInt(maxItemCount, "Ytils.Yupput expects config option .maxItemCount to be an integer number.");
+        yyh.expectBoolean(hideOnEscape, "Ytils.Yupput expects config option .hideOnEscape to be a boolean.");
+        yyh.expectBoolean(matchCaseInsensitive, "Ytils.Yupput expects config option .matchCaseInsensitive to be a boolean.");
+        yyh.expectBoolean(callbackOnNoSelOnEnter, "Ytils.Yupput expects config option .callbackOnNoSelOnEnter to be a boolean.");
+        yyh.expectBoolean(hideOnCallbackFired, "Ytils.Yupput expects config option .hideOnCallbackFired to be a boolean.");
+        yyh.expectBoolean(preloadImages, "Ytils.Yupput expects config option .preloadImages to be a boolean.");
+        yyh.expectBoolean(matchOnlyHeadline, "Ytils.Yupput expects config option .matchOnlyHeadline to be a boolean.");
+        yyh.expectBoolean(containsForHeadlineMatches, "Ytils.Yupput expects config option .containsForHeadlineMatches to be a boolean.");
+        yyh.expectBoolean(containsForMetaMatches, "Ytils.Yupput expects config option .containsForMetaMatches to be a boolean.");
+        yyh.expectBoolean(stopPropagateEnter, "Ytils.Yupput expects config option .stopPropagateEnter to be a boolean.");
+        yyh.expectBoolean(stopPropagateEscape, "Ytils.Yupput expects config option .stopPropagateEscape to be a boolean.");
+        yyh.expectBoolean(stopPropagateDblClick, "Ytils.Yupput expects config option .stopPropagateDblClick to be a boolean.");
+        yyh.expectBoolean(moveCursorToEndOnUp, "Ytils.Yupput expects config option .moveCursorToEndOnUp to be a boolean.");
+        yyh.expectAz09CharOrNull(ctrlShiftChar, "Ytils.Yupput expects config option .ctrlShiftChar to be a single char within a-z, A-Z or 0-9.");
+        yyh.expectFunctionOrNull(callbackOnChange, "Ytils.Yupput expects config option .callbackOnChange to be a function.");
 
 
+        if (null !== ctrlShiftChar) {
 
-        /**
-         * Returns true if the Yupput dialogue is active or not.
-         *
-         * @returns {boolean}
-         */
-        this.isVisible = function() {
+            ctrlShiftChar = ctrlShiftChar.toUpperCase();
+        }
 
-            return uiVisible;
-        };
+        createInitialContainer();
+        valuesPrivate = values;
+        prepareAllValuesAndAppendToBody();
 
-        /**
-         * Updates the placeholder of Yupput's input type="text" element.
-         *
-         * @param {string} placeholder
-         */
-        this.updatePlaceholder = function(placeholder) {
+        Ytils.YupputHtml.expectExisting(INPUT_ID);
+        initKeyListeners();
+        initMouseListeners(true);
 
-            document.getElementById(INPUT_ID).placeholder = placeholder;
-        };
+        if (preloadImages) {
 
-        /**
-         * Updates the data records
-         *
-         * @param {object[]} values - An array of objects with the following parameters:
-         * @param {string} values.headline - The headline of the entry.
-         * @param {string[]} values.metaData - An array of string to display meta data in the second row below the headline.
-         * @param {string} [values.thumbnail] - Optional: The url to the thumbnail image.
-         * @param {string} values.value - The value to return to the callback if value[x] has been selected.
-         */
-        this.updateData = function(values) {
+            preload();
+        }
+    };
 
-            valuesPrivate = values;
-            unhighlightAllItems();
-            prepareAllValuesAndAppendToBody();
-            initMouseListeners(false);
-        };
+    construct(values);
 
-        /**
-         * Renders the dialogue.
-         */
-        this.show = function() {
+        
 
-            showPrivate(values);
-        };
+    /**
+     * Returns true if the Yupput dialogue is active or not.
+     *
+     * @returns {boolean}
+     */
+    this.isVisible = function() {
 
-        /**
-         * Hides the dialogue and resets it.
-         */
-        this.hide = function() {
+        return uiVisible;
+    };
 
-            hidePrivate();
-        };
+    /**
+     * Updates the placeholder of Yupput's input type="text" element.
+     *
+     * @param {string} placeholder
+     */
+    this.updatePlaceholder = function(placeholder) {
+
+        document.getElementById(INPUT_ID).placeholder = placeholder;
+    };
+
+    /**
+     * Updates the data records
+     *
+     * @param {object[]} values - An array of objects with the following parameters:
+     * @param {string} values.headline - The headline of the entry.
+     * @param {string[]} values.metaData - An array of string to display meta data in the second row below the headline.
+     * @param {string} [values.thumbnail] - Optional: The url to the thumbnail image.
+     * @param {string} values.value - The value to return to the callback if value[x] has been selected.
+     */
+    this.updateData = function(values) {
+
+        valuesPrivate = values;
+        unhighlightAllItems();
+        prepareAllValuesAndAppendToBody();
+        initMouseListeners(false);
+    };
+
+    /**
+     * Renders the dialogue.
+     */
+    this.show = function() {
+
+        showPrivate(values);
+    };
+
+    /**
+     * Hides the dialogue and resets it.
+     */
+    this.hide = function() {
+
+        hidePrivate();
+    };
     };
 
 }());

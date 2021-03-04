@@ -440,6 +440,7 @@
                     "placeholder": placeholder,
                     "maxItemCount": rexMdYupputItemCount,
                     "ctrlShiftChar": null,
+                    "hideOnClickOutside": true,
                     "containsForHeadlineMatches": !!containsForArticlesAndMediaPool
                 });
 
