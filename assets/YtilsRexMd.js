@@ -374,7 +374,6 @@
                 var assignCursorPosition = function() {
 
                     currentCursorPosition = $(textAreaInputSelector).prop("selectionStart");
-                    console.log("currentCursorPosition: " + currentCursorPosition);
                 };
 
                 $(textAreaInputSelector).keyup(function() {
