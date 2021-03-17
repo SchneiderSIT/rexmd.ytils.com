@@ -91,6 +91,7 @@
             // Saving function not done yet, see below.
             // var saveBtnId = openerId + "SaveBtn";
 
+            var openerIdSelector = createJQueryIdSelector(openerId);
             var fullScreenOverlaySelector = createJQueryIdSelector(fullScreenOverlayId);
             var fullScreenHeaderSelector = createJQueryIdSelector(fullScreenHeaderId);
             var fullScreenTextareaSelector = createJQueryIdSelector(fullScreenTextareaId);
@@ -125,6 +126,7 @@
             var headerVisible = true;
 
             var currentCursorPosition = null;
+            var currentOpenerCursorPosition = null;
 
             var rexMdConfig = window.Ytils.YtilsRexMd.Config;
             var rexMdConfigFontSize = rexMdConfig.ytils_rex_md_config_font_size || 16;
@@ -136,11 +138,20 @@
             var yupput;
 
             /**
+             * This function fetches the cursor position of the opener textarea.
+             */
+            var assignOpenerCursorPosition = function() {
+
+                currentOpenerCursorPosition = $(openerIdSelector).prop("selectionStart");
+            };
+
+            /**
              * This function fades out the controls header.
              */
             var fadeOutControls = function() {
 
                 if (headerVisible) {
+
                     $(fullScreenHeaderSelector).fadeOut(FADING_SPEED);
                     headerVisible = false;
                 }
@@ -189,6 +200,12 @@
                 $(openerSelector).focus().val($(textAreaInputSelector).val());
             };
 
+            var assignCursorPositionFromOpener = function() {
+
+                assignOpenerCursorPosition();
+                Ytils.YupputHtml.setCursorPosition($(textAreaInputSelector)[0], currentOpenerCursorPosition);
+            };
+
             // First check, if container is already appended:
             if ($(fullScreenOverlaySelector).length) {
 
@@ -196,6 +213,7 @@
                 $(fullScreenHeaderSelector).show();
                 $(fullScreenTextareaSelector).show();
                 updateTextAreaInputAndSetFocus();
+                assignCursorPositionFromOpener();
 
             } else {
 
@@ -249,8 +267,8 @@
                 fullScreenPreview.id = fullScreenPreviewId;
 
                 fullScreenPreview.innerHTML =
-                    "<div style='height: 100%; width: 100%;'>" +
-                        "<div class='ytilsRexMd' id='" + fullScreenPreviewInnerId + "' style='background: none; border: 0; color: #525252; height: 100%; overflow: scroll; width: 100%;'></div>" +
+                    "<div class='ytilsRexMdPreview' style='height: 100%; width: 100%;'>" +
+                        "<div class='ytilsRexMd' id='" + fullScreenPreviewInnerId + "' style='font-family: " + rexMdConfigFont + "; background: none; border: 0; color: #525252; height: 100%; overflow: scroll; width: 100%;'></div>" +
                     "<div>";
 
                 document.body.appendChild(fullScreenPreview);
@@ -280,6 +298,7 @@
                     yupput.hide();
 
                     $(BODY).css(OVERFLOW, initialBodyOverflow);
+                    Ytils.YupputHtml.setCursorPosition($(openerIdSelector)[0], currentCursorPosition);
                 };
 
                 var launchPreview = function() {
@@ -384,6 +403,16 @@
                 $(textAreaInputSelector).click(function() {
 
                     assignCursorPosition();
+                });
+
+                $(openerIdSelector).keyup(function() {
+
+                    assignOpenerCursorPosition();
+                });
+
+                $(openerIdSelector).click(function() {
+
+                    assignOpenerCursorPosition();
                 });
 
                 var yupputSelectionCallback = function(selectedYupputItem/*, inputValue */) {
@@ -508,6 +537,8 @@
                         }
                     }
                 });
+
+                assignCursorPositionFromOpener();
 
                 /* // Saving function not done yet.
                    // After creating a new module block
