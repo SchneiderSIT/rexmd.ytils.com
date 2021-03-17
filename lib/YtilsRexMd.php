@@ -10,7 +10,7 @@
 
 class YtilsRexMd
 {
-    public const VERSION = '0.9.3';
+    public const VERSION = '0.9.4';
     public const REDAXO_ADDON_ID = 'ytils_rex_md';
 
     public const MEDIA_POOL_IMAGE_SUFFIX = "://img";
