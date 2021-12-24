@@ -61,10 +61,10 @@
             var YUPPUT_MODE_MEDIA_POOL = "M";
             var PREVIEW_MODE = "V";
 
-            var FULL_SCREEN_OVERLAY_CSS = "background-color: #F7F7F7; color: #525252; height: 100%; left: 0; position: fixed; top: 0; width: 100%; z-index: 1000;";
-            var FULL_SCREEN_HEADER_CSS = "color: #525252; display: block; left: 0; margin: 0 auto; max-width: 720px; position: absolute; right: 0; top: 0; width: 100%; z-index: 4000;";
-            var FULL_SCREEN_TEXTAREA_CSS = "color: #525252; display: block; height: 100%; left: 0; margin: 0 auto; max-width: 720px; padding-top: 80px; position: absolute; right: 0; top: 0; width: 100%; z-index: 2000;";
-            var FULL_SCREEN_PREVIEW_CSS = "background-color: #F7F7F7; color: #525252; display: none; height: 100%; left: 0; margin: 0 auto; max-width: 720px; padding-top: 80px; padding-bottom: 80px; position: absolute; right: 0; top: 0; width: 100%; z-index: 3000;";
+            var FULL_SCREEN_OVERLAY_CSS = "background-color: #F7F7F7; color: #525252; height: 100%; left: 0; position: fixed; top: 0; width: 100%; z-index: 9000;";
+            var FULL_SCREEN_HEADER_CSS = "color: #525252; display: block; left: 0; margin: 0 auto; max-width: 720px; position: absolute; right: 0; top: 0; width: 100%; z-index: 9400;";
+            var FULL_SCREEN_TEXTAREA_CSS = "color: #525252; display: block; height: 100%; left: 0; margin: 0 auto; max-width: 720px; padding-top: 80px; position: absolute; right: 0; top: 0; width: 100%; z-index: 9200;";
+            var FULL_SCREEN_PREVIEW_CSS = "background-color: #F7F7F7; color: #525252; display: none; height: 100%; left: 0; margin: 0 auto; max-width: 720px; padding-top: 80px; padding-bottom: 80px; position: absolute; right: 0; top: 0; width: 100%; z-index: 9300;";
             var FULL_SCREEN_PREVIEW_CSS_CLASS = "ytilsRexMdFullScreenPreview";
 
             var FULL_SCREEN_OVERLAY = "FullScreenOverlay";
