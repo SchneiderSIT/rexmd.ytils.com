@@ -1,5 +1,5 @@
 package: ytils_rex_md
-version: '0.9.5'
+version: '0.9.8'
 author: Kim Schneider <kim@schneidersit.de>
 supportpage: www.ytils.com
 pjax: false

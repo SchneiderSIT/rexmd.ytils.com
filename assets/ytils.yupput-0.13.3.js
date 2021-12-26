@@ -363,6 +363,18 @@
     };
 
     /**
+     * Updates the z-index of HTML element referenced by id
+     *
+     * @param {string} id
+     * @param {number} zIndex
+     */
+    Ytils.YupputHtml.setZIndexImportant = function(id, zIndex)
+    {
+        Ytils.YupputHtml.expectExisting(id);
+        document.getElementById(id).style.setProperty("z-index", zIndex, "important");
+    };
+
+    /**
      * Creates and appends a div with given id if it does not exists. In both cases it will return the html element.
      *
      * @param {string} id
@@ -591,7 +603,7 @@
 
         } else {
 
-            Ytils.YupputHelper.thrErr("Ytils.YupputHtml.hideElement() expects parameter elem to be an instance of HTMLObjectElement.");
+            Ytils.YupputHelper.thrErr("Ytils.YupputHtml.showElement() expects parameter elem to be an instance of HTMLObjectElement.");
         }
 
         return elem;
@@ -1445,6 +1457,7 @@
             if (false === uiVisible) {
 
                 Ytils.YupputHtml.show(CONTAINER_ID);
+                Ytils.YupputHtml.setZIndexImportant(CONTAINER_ID, zIndex);
                 filterAllValuesAndRender(Ytils.YupputInput.getValueFromInput(INPUT_ID));
 
                 setFocus();

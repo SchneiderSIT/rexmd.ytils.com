@@ -465,10 +465,11 @@
 
                 yupput = new Ytils.Yupput(yupputMpData, yupputSelectionCallback, {
 
+                    "zIndex": 9900,
                     "placeholder": placeholder,
                     "maxItemCount": rexMdYupputItemCount,
                     "ctrlShiftChar": null,
-                    "hideOnClickOutside": true,
+                    "hideOnClickOutside": false,
                     "containsForHeadlineMatches": !!containsForArticlesAndMediaPool
                 });
 
